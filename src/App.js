@@ -6,12 +6,7 @@ import Cars from "./components/Cars";
 function App() {
   return (
     <div>
-      <div>
         {<SaveCarForm/>}
-      </div>
-        <div>
-            {<Cars/>}
-        </div>
     </div>
   );
 }

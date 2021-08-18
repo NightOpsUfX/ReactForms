@@ -1,21 +1,20 @@
-import {useState} from "react";
+
 import {getAllCars, saveCarService} from "../services/carservices";
-
-
+import {useState, useEffect} from "react";
+import Cars from "./Cars";
 
 export default function SaveCarForm () {
     // let [carId, setCarId] = useState('');
     let [carModel, setCarModel] = useState('');
     let [carPrice, setCarPrice] = useState('');
     let [carYear, setCarYear] = useState('');
-    // console.log(carYear)
+    let [cars, setCars] = useState([]);
+    // console.log(cars)
 
-    let [savedCar, setSavedCar] = useState('');
-    // console.log(savedCar)
+    useEffect(() => {
+        getAllCars().then((value) => setCars(value))
+    }, [])
 
-    // let carIdChange = (e) => {
-    //     setCarId(e.target.value);
-    // }
     let carModelChange = (e) => {
         setCarModel(e.target.value);
     }
@@ -26,37 +25,46 @@ export default function SaveCarForm () {
         // console.log(e.target.value)
         setCarYear(e.target.value);
     }
-    const setSavedCarStateTemp = () => {
-        let carTemp = {
-            // carId: carId,
+
+    const saveCarToStorage = (e) => {
+        e.preventDefault()
+
+        saveCarService({
             model: carModel,
             price: carPrice,
             year: carYear
-        }
-        console.log(carTemp)
-        setSavedCar(carTemp)
-    }
-    const saveCarToStorage = (e) => {
-        e.preventDefault()
-        saveCarService(savedCar)
-    }
-
-    const showAllCars = () => {
-        getAllCars()
+        }).then(value => {
+            setCars([...cars, value])
+        })
     }
 
     return (
         <div>
             <div>
-                <form onSubmit={saveCarToStorage} onChange={setSavedCarStateTemp} onClick={showAllCars}>
+                <form onSubmit={saveCarToStorage} >
                     {/*<input type="text" name={'carId'} value={carId} placeholder="Car Id" onChange={carIdChange}/>*/}
                     <input type="text" name={'carModel'} value={carModel} placeholder="Car Model" onChange={carModelChange}/>
+                    <br/>
                     <input type="number" name="price" value={carPrice} placeholder="0" onChange={carPriceChange}/>
+                    <br/>
                     <input type="number" name="year" value={carYear} placeholder="0" onChange={carYearChange}/>
+                    <br/>
                     <input type="submit"/>
                 </form>
             </div>
-
+            <br/>
+            <div>
+                {cars.map(value =>
+                    <div>
+                        {value.id}
+                        {value.model}
+                        {value.price}
+                        {value.year}
+                        <br/>
+                        <br/>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

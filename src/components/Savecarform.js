@@ -8,8 +8,8 @@ export default function SaveCarForm () {
     let [carModel, setCarModel] = useState('');
     let [carPrice, setCarPrice] = useState('');
     let [carYear, setCarYear] = useState('');
+
     let [cars, setCars] = useState([]);
-    // console.log(cars)
 
     useEffect(() => {
         getAllCars().then((value) => setCars(value))
@@ -22,13 +22,12 @@ export default function SaveCarForm () {
         setCarPrice(e.target.value);
     }
     let carYearChange = (e) => {
-        // console.log(e.target.value)
+        console.log(e.target)
         setCarYear(e.target.value);
     }
 
     const saveCarToStorage = (e) => {
         e.preventDefault()
-
         saveCarService({
             model: carModel,
             price: carPrice,
@@ -56,11 +55,10 @@ export default function SaveCarForm () {
             <div>
                 {cars.map(value =>
                     <div>
-                        {value.id}
-                        {value.model}
-                        {value.price}
-                        {value.year}
-                        <br/>
+                        <p>{value.id}</p>
+                        <p>{value.model}</p>
+                        <p>{value.price}</p>
+                        <p>{value.year}</p>
                         <br/>
                     </div>
                 )}
